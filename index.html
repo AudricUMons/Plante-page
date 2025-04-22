@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Galerie des plantes</title>
+<style>
+body {font-family: sans-serif;}
+.plant-container {position: relative; display: inline-block; margin: 10px;}
+.plant-container img {max-width:300px; display:block; cursor:pointer;}
+.tooltip {display:none; position:absolute; top:0; left:0; background:rgba(0,0,0,0.8); color:#fff; padding:8px; border-radius:4px; width:180px;}
+.plant-container.show-tooltip .tooltip {display:block;}
+#overlay {position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:1000;}
+#overlay img {max-width:90%; max-height:90%;}
+</style>
+</head>
+<body>
+<h1>Galerie des plantes</h1>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+  <input type="text" id="searchBar" placeholder="Rechercher une plante..." style="flex:1; padding: 10px; font-size: 16px;">
+  <button onclick="document.body.classList.toggle('dark-mode')" style="margin-left: 10px; padding: 10px 15px; font-size: 16px;">🌙 / ☀️</button>
+</div>
+<div style="margin-bottom: 10px;">
+  <label><input type="checkbox" class="filter-type" value="annuelle" checked> Annuelles</label>
+  <label><input type="checkbox" class="filter-type" value="bisannuelle" checked> Bisannuelles</label>
+  <label><input type="checkbox" class="filter-type" value="rare" checked> Rares</label>
+</div>
+<script>
+function updateFilters() {
+  let search = document.getElementById("searchBar").value.toLowerCase();
+  let checkedTypes = Array.from(document.querySelectorAll(".filter-type:checked")).map(cb => cb.value);
+  document.querySelectorAll(".plant-container").forEach(container => {
+    const name = container.querySelector("img").alt.toLowerCase();
+    const type = container.getAttribute("data-type");
+    const matchesType = checkedTypes.includes(type);
+    const matchesSearch = name.includes(search);
+    container.style.display = (matchesType && matchesSearch) ? "inline-block" : "none";
+  });
+}
+
+document.getElementById("searchBar").addEventListener("input", updateFilters);
+document.querySelectorAll(".filter-type").forEach(cb => cb.addEventListener("change", updateFilters));
+</script>
+<style>
+  body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  body.dark-mode .tooltip {
+    background: rgba(255,255,255,0.9);
+    color: black;
+  }
+</style>
+
+<div id="overlay"></div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.querySelector("#overlay");
+  document.querySelectorAll(".plant-container").forEach(c => {
+    c.onclick = e => {
+      e.stopPropagation();
+      overlay.innerHTML = "";
+      overlay.appendChild(c.querySelector("img").cloneNode());
+      overlay.style.display = "flex";
+    };
+    c.oncontextmenu = e => {
+      e.preventDefault();
+      document.querySelectorAll(".show-tooltip").forEach(x => x.classList.remove("show-tooltip"));
+      c.classList.toggle("show-tooltip");
+    };
+    let pressTimer;
+    c.addEventListener("touchstart", e => {
+      pressTimer = setTimeout(() => {
+        document.querySelectorAll(".show-tooltip").forEach(x => x.classList.remove("show-tooltip"));
+        c.classList.add("show-tooltip");
+      }, 500);
+    });
+    c.addEventListener("touchend", () => clearTimeout(pressTimer));
+  });
+  document.onclick = () => document.querySelectorAll(".show-tooltip").forEach(x => x.classList.remove("show-tooltip"));
+  overlay.onclick = e => {
+    e.stopPropagation();
+    overlay.style.display = "none";
+  };
+});
+</script>
+<hr><h3>Plantes annuelles</h3><hr>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Abutilon_hybride.jpg" alt="Abutilon hybride"><div class="tooltip"><strong>Abutilon hybride</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Ageratum_houstonianum.jpg" alt="Ageratum houstonianum"><div class="tooltip"><strong>Ageratum houstonianum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Alternanthera_magnifica.jpg" alt="Alternanthera magnifica"><div class="tooltip"><strong>Alternanthera magnifica</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Alyssum_maritimum.jpg" alt="Alyssum maritimum (syn Lobularia maritima)"><div class="tooltip"><strong>Alyssum maritimum (syn Lobularia maritima)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Amaranthus_caudatus.jpg" alt="Amaranthus caudatus"><div class="tooltip"><strong>Amaranthus caudatus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Antirrhinum_majus.jpg" alt="Antirrhinum majus"><div class="tooltip"><strong>Antirrhinum majus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Bassia_scoparia.jpg" alt="Bassia scoparia (syn Kochia scoparia)"><div class="tooltip"><strong>Bassia scoparia (syn Kochia scoparia)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Begonia_semperflorens.jpg" alt="Begonia semperflorens"><div class="tooltip"><strong>Begonia semperflorens</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Bidens_ferulifolia.jpg" alt="Bidens ferulifolia"><div class="tooltip"><strong>Bidens ferulifolia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Brachycome_iberidifolia.jpg" alt="Brachycome iberidifolia"><div class="tooltip"><strong>Brachycome iberidifolia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Brassica_oleracea.jpg" alt="Brassica oleracea"><div class="tooltip"><strong>Brassica oleracea</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Calceolaria_rugosa_integrifolia.jpg" alt="Calceolaria rugosa integrifolia"><div class="tooltip"><strong>Calceolaria rugosa integrifolia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Calendula_officinalis.jpg" alt="Calendula officinalis"><div class="tooltip"><strong>Calendula officinalis</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Callistephus_chinensis.jpg" alt="Callistephus chinensis"><div class="tooltip"><strong>Callistephus chinensis</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Celosia_cristata.jpg" alt="Celosia cristata"><div class="tooltip"><strong>Celosia cristata</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Celosia_plumosa.jpg" alt="Celosia plumosa"><div class="tooltip"><strong>Celosia plumosa</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Chrysanthemum_carinatum.jpg" alt="Chrysanthemum carinatum"><div class="tooltip"><strong>Chrysanthemum carinatum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Chrysanthemum_segetum.jpg" alt="Chrysanthemum segetum"><div class="tooltip"><strong>Chrysanthemum segetum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Coleus_blumei_hybride.jpg" alt="Coleus blumei hybride"><div class="tooltip"><strong>Coleus blumei hybride</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Coreopsis_tinctoria.jpg" alt="Coreopsis tinctoria"><div class="tooltip"><strong>Coreopsis tinctoria</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Cosmos_bipinnatus.jpg" alt="Cosmos bipinnatus"><div class="tooltip"><strong>Cosmos bipinnatus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Cuphea_platycentra_ignea.jpg" alt="Cuphea platycentra ignea"><div class="tooltip"><strong>Cuphea platycentra ignea</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Dianthus_chinensis.jpg" alt="Dianthus chinensis"><div class="tooltip"><strong>Dianthus chinensis</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Echeveria_secunda.jpg" alt="Echeveria secunda"><div class="tooltip"><strong>Echeveria secunda</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Eschscholtzia_californica.jpg" alt="Eschscholtzia californica"><div class="tooltip"><strong>Eschscholtzia californica</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Felicia_amelloides.jpg" alt="Felicia amelloides (syn Agathea amelloides)"><div class="tooltip"><strong>Felicia amelloides (syn Agathea amelloides)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Gaillardia.jpg" alt="Gaillardia"><div class="tooltip"><strong>Gaillardia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Gaura_lindheimeri.jpg" alt="Gaura lindheimeri"><div class="tooltip"><strong>Gaura lindheimeri</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Gazania_splendens.jpg" alt="Gazania splendens"><div class="tooltip"><strong>Gazania splendens</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Gypsophila_muralis.jpg" alt="Gypsophila muralis"><div class="tooltip"><strong>Gypsophila muralis</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Helianthus_annuus.jpg" alt="Helianthus annuus"><div class="tooltip"><strong>Helianthus annuus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Helichrysum_italicum.jpg" alt="Helichrysum italicum syn orientale"><div class="tooltip"><strong>Helichrysum italicum syn orientale</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Helichrysum_microphylla.jpg" alt="Helichrysum petiolare syn H. lanatum (syn Gnaphalium lanalanum)"><div class="tooltip"><strong>Helichrysum petiolare syn H. lanatum (syn Gnaphalium lanalanum)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Helichrysum_petiolare.jpg" alt="Helichrysum microphylla (syn Gnaphalium mycrophyllum)"><div class="tooltip"><strong>Helichrysum microphylla (syn Gnaphalium mycrophyllum)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Heliotropium_peruvianum.jpg" alt="Heliotropium peruvianum"><div class="tooltip"><strong>Heliotropium peruvianum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Impatiens_walleriana.jpg" alt="Impatiens walleriana"><div class="tooltip"><strong>Impatiens walleriana</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Iresine_herbstii.jpg" alt="Iresine herbstii (syn Achyrantes verschaffeltii)"><div class="tooltip"><strong>Iresine herbstii (syn Achyrantes verschaffeltii)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Kochia_scoparia.jpg" alt="Kochia scoparia (syn Bassia scoparia)"><div class="tooltip"><strong>Kochia scoparia (syn Bassia scoparia)</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Lantana_camara.png" alt="Lantana camara"><div class="tooltip"><strong>Lantana camara</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Lobelia_erinus.jpg" alt="Lobelia erinus"><div class="tooltip"><strong>Lobelia erinus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Lobularia_maritima.jpg" alt="Lobularia maritima"><div class="tooltip"><strong>Lobularia maritima</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Mesembryanthemum_criniflorum.jpg" alt="Mesembryanthemum criniflorum"><div class="tooltip"><strong>Mesembryanthemum criniflorum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Mimulus_luteus.jpg" alt="Mimulus luteus"><div class="tooltip"><strong>Mimulus luteus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Nemesia_strumosa.jpg" alt="Nemesia strumosa"><div class="tooltip"><strong>Nemesia strumosa</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Nicotiana_alata.jpg" alt="Nicotiana alata"><div class="tooltip"><strong>Nicotiana alata</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Nicotiana_x_sanderae.jpg" alt="Nicotiana x sanderae"><div class="tooltip"><strong>Nicotiana x sanderae</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Papaver_glaucum.jpg" alt="Papaver glaucum"><div class="tooltip"><strong>Papaver glaucum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Papaver_nudicaule.jpg" alt="Papaver nudicaule"><div class="tooltip"><strong>Papaver nudicaule</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Papaver_rhoeas.jpg" alt="Papaver Rhoeas"><div class="tooltip"><strong>Papaver Rhoeas</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Papaver_somniferum.jpg" alt="Papaver somniferum"><div class="tooltip"><strong>Papaver somniferum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Pelargonium_peltatum.jpg" alt="Pelargonium peltatum"><div class="tooltip"><strong>Pelargonium peltatum</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Pelargonium_zonale.jpg" alt="Pelargonium zonale"><div class="tooltip"><strong>Pelargonium zonale</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Petunia_x_hybrida.jpg" alt="Petunia x hybrida"><div class="tooltip"><strong>Petunia x hybrida</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Petunia_x_surfinia.jpg" alt="Petunia x surfinia"><div class="tooltip"><strong>Petunia x surfinia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Phlox_drummondii.jpg" alt="Phlox drumondii"><div class="tooltip"><strong>Phlox drumondii</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Plectranthus_coleoides.jpg" alt="Plectranthus coleoides"><div class="tooltip"><strong>Plectranthus coleoides</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Portulaca_grandiflora.jpg" alt="Portulaca grandiflora"><div class="tooltip"><strong>Portulaca grandiflora</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Pyrethrum_parthenium.jpg" alt="Pyrethrum parthenium"><div class="tooltip"><strong>Pyrethrum parthenium</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Ricinus_communis.jpg" alt="Tanacetum parthenium"><div class="tooltip"><strong>Tanacetum parthenium</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Rudbeckia_hirta.jpg" alt="Ricinus"><div class="tooltip"><strong>Ricinus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Salvia_coccinea.jpg" alt="Rudbeckia hirta"><div class="tooltip"><strong>Rudbeckia hirta</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Salvia_farinacea.jpg" alt="Salvia coccinea"><div class="tooltip"><strong>Salvia coccinea</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Salvia_patens.jpg" alt="Salvia farinacea"><div class="tooltip"><strong>Salvia farinacea</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Salvia_splendens.jpg" alt="Salvia patens"><div class="tooltip"><strong>Salvia patens</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Santolina_chamaecyparissus.jpg" alt="Salvia splendens"><div class="tooltip"><strong>Salvia splendens</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Sanvitalia_procumbens.jpg" alt="Santolina chamaecyparissus"><div class="tooltip"><strong>Santolina chamaecyparissus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Scaevola_aemula.jpg" alt="Sanvitalia procumbens"><div class="tooltip"><strong>Sanvitalia procumbens</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Senecio_cineraria.jpg" alt="Scaevola aemula"><div class="tooltip"><strong>Scaevola aemula</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Tagetes_erecta.jpg" alt="Senecio cineraria"><div class="tooltip"><strong>Senecio cineraria</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Tagetes_patula.jpg" alt="Tagetes erecta"><div class="tooltip"><strong>Tagetes erecta</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Tanacetum_parthenium.jpg" alt="Tagetes patula"><div class="tooltip"><strong>Tagetes patula</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Tropaeolum_majus.jpg" alt="Tropaeolum majus"><div class="tooltip"><strong>Tropaeolum majus</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Verbena_rigida.jpg" alt="Verbena rigida syn venosa"><div class="tooltip"><strong>Verbena rigida syn venosa</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Verbena_x_hybrida.jpg" alt="Verbena x hybrida"><div class="tooltip"><strong>Verbena x hybrida</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Zinnia_Haageana.jpg" alt="Zinnia elegans"><div class="tooltip"><strong>Zinnia elegans</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Zinnia_angustifolia.jpg" alt="Zinnia Haageana syn angustifolia"><div class="tooltip"><strong>Zinnia Haageana syn angustifolia</strong><br></div></div>
+<div class="plant-container" data-type="annuelle"><img src="images_annuelle/Zinnia_elegans.jpg" alt="Zinnia angustifolia"><div class="tooltip"><strong>Zinnia angustifolia</strong><br></div></div>
+<hr><h3>Plantes rares (annuelles)</h3><hr>
+<div class="plant-container" data-type="rare"><img src="images_rare/Acroclinium_roseum.jpg" alt="Acroclinium roseum"><div class="tooltip"><strong>Acroclinium roseum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Alternanthera_bettzickiana.jpg" alt="Alternanthera bettzickiana"><div class="tooltip"><strong>Alternanthera bettzickiana</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Alternanthera_magnifica.jpg" alt="Alternanthera magnifica"><div class="tooltip"><strong>Alternanthera magnifica</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Alternanthera_telanthera.jpg" alt="Alternanthera telanthera"><div class="tooltip"><strong>Alternanthera telanthera</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Alternanthera_tricolor.jpg" alt="Alternanthera tricolor"><div class="tooltip"><strong>Alternanthera tricolor</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Ammi_majus.jpg" alt="Ammi majus"><div class="tooltip"><strong>Ammi majus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Anagallis_monelli.jpg" alt="Anagallis monelli"><div class="tooltip"><strong>Anagallis monelli</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Anchusa_capensis.jpg" alt="Anchusa capensis"><div class="tooltip"><strong>Anchusa capensis</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Anethum_graveolens.jpg" alt="Anethum graveolens"><div class="tooltip"><strong>Anethum graveolens</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Argyranthemum_frutescens.jpg" alt="Argyranthemum frutescens"><div class="tooltip"><strong>Argyranthemum frutescens</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Asteriscus_maritimus.jpg" alt="Asteriscus maritimus"><div class="tooltip"><strong>Asteriscus maritimus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Beta_vulgaris.jpg" alt="Beta vulgaris"><div class="tooltip"><strong>Beta vulgaris</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Capsicum_frutescens.jpg" alt="Capsicum frutescens"><div class="tooltip"><strong>Capsicum frutescens</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Carthamus_tinctorius.jpg" alt="Carthamus tinctorius"><div class="tooltip"><strong>Carthamus tinctorius</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Celosia_spicata.jpg" alt="Celosia spicata"><div class="tooltip"><strong>Celosia spicata</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Centaurea_americana.jpg" alt="Centaurea americana"><div class="tooltip"><strong>Centaurea americana</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Centaurea_cyanus.jpg" alt="Centaurea cyanus"><div class="tooltip"><strong>Centaurea cyanus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Centaurea_moschata.jpg" alt="Centaurea moschata"><div class="tooltip"><strong>Centaurea moschata</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Chrysanthemum_multicaule.jpg" alt="Chrysanthemum multicaule"><div class="tooltip"><strong>Chrysanthemum multicaule</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Cirsium_japonicum.jpg" alt="Cirsium japonicum"><div class="tooltip"><strong>Cirsium japonicum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Clarkia_elegans.jpg" alt="Clarkia elegans"><div class="tooltip"><strong>Clarkia elegans</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Cleome_spinosa.jpg" alt="Cleome spinosa"><div class="tooltip"><strong>Cleome spinosa</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Convolvulus_sabatius.jpg" alt="Convolvulus sabatius"><div class="tooltip"><strong>Convolvulus sabatius</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Craspedia_globosa.jpg" alt="Craspedia globosa"><div class="tooltip"><strong>Craspedia globosa</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Dahlia_xhybride.jpg" alt="Dahlia xhybride"><div class="tooltip"><strong>Dahlia xhybride</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Delphinium_ajacis.jpg" alt="Delphinium ajacis"><div class="tooltip"><strong>Delphinium ajacis</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Diascia_barbareae.jpg" alt="Diascia barbareae"><div class="tooltip"><strong>Diascia barbareae</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Echeveria_desmetiana.jpg" alt="Echeveria desmetiana"><div class="tooltip"><strong>Echeveria desmetiana</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Echeveria_metallica.jpg" alt="Echeveria metallica"><div class="tooltip"><strong>Echeveria metallica</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Echeveria_secunda_glauca.jpg" alt="Echeveria secunda glauca"><div class="tooltip"><strong>Echeveria secunda glauca</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Erigeron_karvinskianus.jpg" alt="Erigeron karvinskianus"><div class="tooltip"><strong>Erigeron karvinskianus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Euphorbia_marginata.jpg" alt="Euphorbia marginata"><div class="tooltip"><strong>Euphorbia marginata</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Euryops_chrysanthemoides_syn_pectinatus.jpg" alt="Euryops chrysanthemoides syn pectinatus"><div class="tooltip"><strong>Euryops chrysanthemoides syn pectinatus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Foeniculum_vulgare.jpg" alt="Foeniculum vulgare"><div class="tooltip"><strong>Foeniculum vulgare</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Fragaria.jpg" alt="Fragaria"><div class="tooltip"><strong>Fragaria</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Fuchsia_xhybride.jpg" alt="Fuchsia xhybride"><div class="tooltip"><strong>Fuchsia xhybride</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Glechoma_hederaceae.jpg" alt="Glechoma hederaceae"><div class="tooltip"><strong>Glechoma hederaceae</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Godetia.jpg" alt="Godetia"><div class="tooltip"><strong>Godetia</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Gomphrena_globosa.jpg" alt="Gomphrena globosa"><div class="tooltip"><strong>Gomphrena globosa</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Helichrysum_bracteatum.jpg" alt="Helichrysum bracteatum"><div class="tooltip"><strong>Helichrysum bracteatum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Helichrysum_microphyllum_syn._Gnaphalium_microphylum.jpg" alt="Helichrysum microphyllum syn. Gnaphalium microphylum"><div class="tooltip"><strong>Helichrysum microphyllum syn. Gnaphalium microphylum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Helichrysum_petiolare_syn._Helichrysum_lanatum_syn._Gnaphalium_lanatum.jpg" alt="Helichrysum petiolare syn. Helichrysum lanatum syn. Gnaphalium lanatum"><div class="tooltip"><strong>Helichrysum petiolare syn. Helichrysum lanatum syn. Gnaphalium lanatum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Impatiens_New_Guinea.jpg" alt="Impatiens New Guinea"><div class="tooltip"><strong>Impatiens New Guinea</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Lotus_berthelotii.jpg" alt="Lotus berthelotii"><div class="tooltip"><strong>Lotus berthelotii</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Lycopersicum_aesculentum.jpg" alt="Lycopersicum aesculentum"><div class="tooltip"><strong>Lycopersicum aesculentum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Lysimachia_congestiflora.jpg" alt="Lysimachia congestiflora"><div class="tooltip"><strong>Lysimachia congestiflora</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Lysimachia_nummularia.jpg" alt="Lysimachia nummularia"><div class="tooltip"><strong>Lysimachia nummularia</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Melampodium_paludosum.jpg" alt="Melampodium paludosum"><div class="tooltip"><strong>Melampodium paludosum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Mentha_suaveolens.jpg" alt="Mentha suaveolens"><div class="tooltip"><strong>Mentha suaveolens</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Osteospermum_x_hybride.jpg" alt="Osteospermum x hybride"><div class="tooltip"><strong>Osteospermum x hybride</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Pelargonium_grandiflorum.jpg" alt="Pelargonium grandiflorum"><div class="tooltip"><strong>Pelargonium grandiflorum</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Plectranthus_coleoides.jpg" alt="Plectranthus coleoides"><div class="tooltip"><strong>Plectranthus coleoides</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Sutera diffusus.jpg" alt="Sutera diffusus"><div class="tooltip"><strong>Sutera diffusus</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Tagetes_signata_syn._tenuifolia.jpg" alt="Tagetes signata syn. tenuifolia"><div class="tooltip"><strong>Tagetes signata syn. tenuifolia</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Thymophylla_tenuiloba.jpg" alt="Thymophylla tenuiloba"><div class="tooltip"><strong>Thymophylla tenuiloba</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Torenia_fournieri.jpg" alt="Torenia fournieri"><div class="tooltip"><strong>Torenia fournieri</strong><br></div></div>
+<div class="plant-container" data-type="rare"><img src="images_rare/Verbena_bonariensis.jpg" alt="Verbena bonariensis"><div class="tooltip"><strong>Verbena bonariensis</strong><br></div></div>
+<hr><h3>Plantes bisannuelles</h3><hr>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Alcea_rosea.jpg" alt="Alcea rosea syn Althaea rosea"><div class="tooltip"><strong>Alcea rosea syn Althaea rosea</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Althaea_rosea.png" alt="Althaea rosea syn Alcea rosea"><div class="tooltip"><strong>Althaea rosea syn Alcea rosea</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Bellis_perennis.jpg" alt="Bellis perennis"><div class="tooltip"><strong>Bellis perennis</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Cheiranthus_cheiri.jpg" alt="Dianthus barbatus"><div class="tooltip"><strong>Dianthus barbatus</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Dianthus_barbatus.jpg" alt="Cheiranthus cheiri syn Erysimum cheiri"><div class="tooltip"><strong>Cheiranthus cheiri syn Erysimum cheiri</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Erysimum_cheiri.jpg" alt="Erysimum cheiri syn Cheiranthus cheiri"><div class="tooltip"><strong>Erysimum cheiri syn Cheiranthus cheiri</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Lunaria_biennis.jpg" alt="Lunaria biennis"><div class="tooltip"><strong>Lunaria biennis</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Myosotis_alpestris.jpg" alt="Myosotis alpestris"><div class="tooltip"><strong>Myosotis alpestris</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Primula_x_hortensis.jpeg" alt="Primula x hortensis"><div class="tooltip"><strong>Primula x hortensis</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Viola_cornuta.jpg" alt="Viola cornuta"><div class="tooltip"><strong>Viola cornuta</strong><br></div></div>
+<div class="plant-container" data-type="bisannuelle"><img src="images_biannuelle/Viola_x_wittrockiana.jpg" alt="Viola x wittrockiana"><div class="tooltip"><strong>Viola x wittrockiana</strong><br></div></div>
+</body>
+</html>
