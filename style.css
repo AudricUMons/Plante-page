@@ -86,6 +86,11 @@ body {
   .plant-container.show-tooltip .tooltip {
     display: block;
   }
+
+  .plant-container.show-tooltip {
+    overflow: visible;
+    z-index: 1001;
+  }
   
   #overlay {
     position: fixed;
