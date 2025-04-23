@@ -70,16 +70,19 @@ body {
     font-size: 14px;
     line-height: 1.4;
     scrollbar-width: thin;
+    z-index: 100;
   }
-  
+
   .tooltip::-webkit-scrollbar {
     width: 6px;
   }
+
   .tooltip::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
   }
-    
+  
+  
   .plant-container.show-tooltip .tooltip {
     display: block;
   }
@@ -240,9 +243,21 @@ body {
   
   /* Sur mobile : rendre plus compact */
   @media screen and (max-width: 600px) {
-    .sticky-bar {
-      padding: 5px 0;
+    .tooltip {
+      position: fixed;
+      left: 10px;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: auto;
+      max-height: 60vh;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.95);
+      font-size: 16px;
+      overflow-y: auto;
+      z-index: 2000;
     }
+  
   
     .search-controls input {
       font-size: 14px;
