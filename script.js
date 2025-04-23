@@ -94,3 +94,32 @@ function updateFilters() {
   function closeQuizOverlay() {
     document.getElementById("quizOverlay").style.display = "none";
   }
+
+  async function fetchWikiSummary(title) {
+    const apiUrl = `https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error("Pas trouvé");
+      const data = await response.json();
+      return data.extract;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  window.addEventListener("load", async () => {
+    const tooltips = document.querySelectorAll(".plant-container .tooltip");
+    for (let tooltip of tooltips) {
+      const name = tooltip.querySelector("strong").innerText.split("(")[0].trim();
+      const summary = localStorage.getItem("wiki_" + name);
+      if (summary) {
+        tooltip.innerHTML = `<strong>${name}</strong><br>${summary}`;
+      } else {
+        const fetched = await fetchWikiSummary(name);
+        if (fetched) {
+          tooltip.innerHTML = `<strong>${name}</strong><br>${fetched}`;
+          localStorage.setItem("wiki_" + name, fetched);
+        }
+      }
+    }
+  });

@@ -60,13 +60,26 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     color: #fff;
     padding: 8px;
-    border-radius: 4px;
-    width: 180px;
+    border-radius: 6px;
+    width: 220px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.4;
+    scrollbar-width: thin;
   }
   
+  .tooltip::-webkit-scrollbar {
+    width: 6px;
+  }
+  .tooltip::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+    
   .plant-container.show-tooltip .tooltip {
     display: block;
   }
