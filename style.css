@@ -192,3 +192,39 @@ body {
       transform: translateX(-50%) scale(1);
     }
   }
+
+  .sticky-bar {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  body.dark-mode .sticky-bar {
+    background: #121212;
+    border-bottom: 1px solid #333;
+  }
+  
+  /* Sur mobile : rendre plus compact */
+  @media screen and (max-width: 600px) {
+    .sticky-bar {
+      padding: 5px 0;
+    }
+  
+    .search-controls input {
+      font-size: 14px;
+      padding: 6px;
+    }
+  
+    .search-controls button {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+  
+    .filter-controls label {
+      font-size: 14px;
+    }
+  }
+  

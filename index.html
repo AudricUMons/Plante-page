@@ -30,15 +30,17 @@
     <h1>Galerie des plantes</h1>
   </header>
 
-  <div class="search-controls">
-    <input type="text" id="searchBar" placeholder="Rechercher une plante...">
-    <button onclick="document.body.classList.toggle('dark-mode')" aria-label="Activer/désactiver le mode sombre">🌙 / ☀️</button>
-  </div>
-
-  <div class="filter-controls">
-    <label><input type="checkbox" class="filter-type" value="annuelle" checked> Annuelles</label>
-    <label><input type="checkbox" class="filter-type" value="rare" checked> Rares</label>
-    <label><input type="checkbox" class="filter-type" value="bisannuelle" checked> Bisannuelles</label>
+  <div class="sticky-bar">
+    <div class="search-controls">
+      <input type="text" id="searchBar" placeholder="Rechercher une plante...">
+      <button onclick="document.body.classList.toggle('dark-mode')" aria-label="Activer/désactiver le mode sombre">🌙 / ☀️</button>
+    </div>
+  
+    <div class="filter-controls">
+      <label><input type="checkbox" class="filter-type" value="annuelle" checked> Annuelles</label>
+      <label><input type="checkbox" class="filter-type" value="rare" checked> Rares</label>
+      <label><input type="checkbox" class="filter-type" value="bisannuelle" checked> Bisannuelles</label>
+    </div>
   </div>
 
   <div id="overlay"></div>
