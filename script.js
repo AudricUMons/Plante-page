@@ -60,9 +60,13 @@ function updateFilters() {
   });
   
 
-  const quizImages = Array.from(document.querySelectorAll(".plant-container img"));
+  let quizImages = [];
   let correctAnswer = "";
-
+  
+  window.addEventListener("DOMContentLoaded", () => {
+    quizImages = Array.from(document.querySelectorAll(".plant-container img"));
+  });
+  
   function launchQuiz() {
     const random = quizImages[Math.floor(Math.random() * quizImages.length)];
     document.getElementById("quizImage").src = random.src;
@@ -71,9 +75,10 @@ function updateFilters() {
     document.getElementById("quizInput").value = "";
     document.getElementById("quizFeedback").innerText = "";
     document.getElementById("quizSubmit").innerText = "Valider";
+    document.getElementById("quizSubmit").onclick = submitQuizAnswer;
     document.getElementById("quizInput").disabled = false;
   }
-
+  
   function submitQuizAnswer() {
     const input = document.getElementById("quizInput").value.trim().toLowerCase();
     const isCorrect = input === correctAnswer;
@@ -90,7 +95,7 @@ function updateFilters() {
     };
     document.getElementById("quizInput").disabled = true;
   }
-
+  
   function closeQuizOverlay() {
     document.getElementById("quizOverlay").style.display = "none";
   }
@@ -106,20 +111,49 @@ function updateFilters() {
       return null;
     }
   }
-
+  
+  async function fetchWikidataDescription(title) {
+    const url = "https://www.wikidata.org/w/api.php";
+    const params = new URLSearchParams({
+      action: "wbsearchentities",
+      format: "json",
+      language: "fr",
+      search: title,
+      origin: "*"
+    });
+    try {
+      const response = await fetch(`${url}?${params.toString()}`);
+      const data = await response.json();
+      if (data.search && data.search.length > 0) {
+        return data.search[0].description;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  
   window.addEventListener("load", async () => {
     const tooltips = document.querySelectorAll(".plant-container .tooltip");
     for (let tooltip of tooltips) {
       const name = tooltip.querySelector("strong").innerText.split("(")[0].trim();
-      const summary = localStorage.getItem("wiki_" + name);
+      let summary = localStorage.getItem("wiki_" + name);
       if (summary) {
         tooltip.innerHTML = `<strong>${name}</strong><br>${summary}`;
       } else {
-        const fetched = await fetchWikiSummary(name);
-        if (fetched) {
-          tooltip.innerHTML = `<strong>${name}</strong><br>${fetched}`;
-          localStorage.setItem("wiki_" + name, fetched);
+        const wiki = await fetchWikiSummary(name);
+        if (wiki) {
+          tooltip.innerHTML = `<strong>${name}</strong><br>${wiki}`;
+          localStorage.setItem("wiki_" + name, wiki);
+        } else {
+          const wikidata = await fetchWikidataDescription(name);
+          if (wikidata) {
+            tooltip.innerHTML = `<strong>${name}</strong><br>${wikidata}`;
+            localStorage.setItem("wiki_" + name, wikidata);
+          } else {
+            tooltip.innerHTML = `<strong>${name}</strong><br>Aucune information trouvée.`;
+          }
         }
       }
     }
   });
+  
