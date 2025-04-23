@@ -1,11 +1,27 @@
 body {
-    font-family: sans-serif;
-  }
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #222;
+  line-height: 1.6;
+  margin: 5px;
+  padding: 0;
+}
   
   .plant-container {
+    background: white;
+    border-radius: 12px;
+    margin: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
     display: inline-block;
-    margin: 10px;
+  }
+
+  .plant-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
   }
   
   .search-controls {
@@ -19,12 +35,14 @@ body {
     flex: 1;
     padding: 10px;
     font-size: 16px;
+    border-radius: 12px;
   }
   
   .search-controls button {
     margin-left: 10px;
     padding: 10px 15px;
     font-size: 16px;
+    border-radius: 12px;
   }
   
   .filter-controls {
@@ -95,54 +113,54 @@ body {
     z-index: 9999;
   }
   
-.plant-loader {
-  position: relative;
-  width: 10px;
-  height: 100px;
-  background: #4CAF50;
-  animation: grow-stem 3s ease-out forwards;
-  transform-origin: bottom center;
-}
+  .plant-loader {
+    position: relative;
+    width: 10px;
+    height: 100px;
+    background: #4CAF50;
+    animation: grow-stem 3s ease-out forwards;
+    transform-origin: bottom center;
+  }
 
-@keyframes grow-stem {
-  from {
-    transform: scaleY(0.1);
+  @keyframes grow-stem {
+    from {
+      transform: scaleY(0.1);
+      opacity: 0;
+    }
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  .leaf {
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    background: #81C784;
+    border-radius: 50% 50% 0 0;
+    top: 20px;
     opacity: 0;
+    animation: show-leaf 1s ease-out 1.5s forwards;
   }
-  to {
-    transform: scaleY(1);
-    opacity: 1;
+
+  .leaf-left {
+    transform: rotate(-45deg);
+    left: -18px;
   }
-}
 
-.leaf {
-  position: absolute;
-  width: 20px;
-  height: 10px;
-  background: #81C784;
-  border-radius: 50% 50% 0 0;
-  top: 20px;
-  opacity: 0;
-  animation: show-leaf 1s ease-out 1.5s forwards;
-}
-
-.leaf-left {
-  transform: rotate(-45deg);
-  left: -18px;
-}
-
-.leaf-right {
-  transform: rotate(45deg);
-  right: -18px;
-}
-
-@keyframes show-leaf {
-  to {
-    opacity: 1;
+  .leaf-right {
+    transform: rotate(45deg);
+    right: -18px;
   }
-}
 
-.flower {
+  @keyframes show-leaf {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .flower {
     position: absolute;
     top: -25px;
     left: 50%;
@@ -196,7 +214,7 @@ body {
   .sticky-bar {
     position: sticky;
     top: 0;
-    background: white;
+    background: whitesmoke;
     z-index: 10;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
@@ -226,5 +244,11 @@ body {
     .filter-controls label {
       font-size: 14px;
     }
+  }
+
+  .filter-controls input[type="checkbox"] {
+    accent-color: #4CAF50;
+    transform: scale(1.2);
+    margin-right: 6px;
   }
   
