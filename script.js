@@ -59,3 +59,38 @@ function updateFilters() {
     }, 3000);
   });
   
+
+  const quizImages = Array.from(document.querySelectorAll(".plant-container img"));
+  let correctAnswer = "";
+
+  function launchQuiz() {
+    const random = quizImages[Math.floor(Math.random() * quizImages.length)];
+    document.getElementById("quizImage").src = random.src;
+    document.getElementById("quizOverlay").style.display = "flex";
+    correctAnswer = random.alt.split("(")[0].trim().toLowerCase();
+    document.getElementById("quizInput").value = "";
+    document.getElementById("quizFeedback").innerText = "";
+    document.getElementById("quizSubmit").innerText = "Valider";
+    document.getElementById("quizInput").disabled = false;
+  }
+
+  function submitQuizAnswer() {
+    const input = document.getElementById("quizInput").value.trim().toLowerCase();
+    const isCorrect = input === correctAnswer;
+    const feedback = document.getElementById("quizFeedback");
+    if (isCorrect) {
+      feedback.innerText = "✅ Bravo ! Bonne réponse !";
+    } else {
+      feedback.innerText = `❌ Mauvaise réponse. C'était : ${correctAnswer}`;
+    }
+    document.getElementById("quizSubmit").innerText = "Rejouer";
+    document.getElementById("quizSubmit").onclick = () => {
+      closeQuizOverlay();
+      setTimeout(() => launchQuiz(), 300);
+    };
+    document.getElementById("quizInput").disabled = true;
+  }
+
+  function closeQuizOverlay() {
+    document.getElementById("quizOverlay").style.display = "none";
+  }
